@@ -3,35 +3,54 @@ import java.util.HashMap;
 
 public class Command {
     public enum CommandType {
-        NewObject, // 1
-        Load, // 2
-        Ship, // 3
-        Show; // 4
+        NEW_OBJECT, // 1
+        LOAD, // 2
+        SHIP, // 3
+        SHOW; // 4
 
-        public CommandType valueOfInt(int n) {
+        public static CommandType valueOfInt(int n) {
             switch (n) {
-                case 1: return NewObject;
-                case 2: return Load;
-                case 3: return Ship;
-                case 4: return Show;
+                case 1: return NEW_OBJECT;
+                case 2: return LOAD;
+                case 3: return SHIP;
+                case 4: return SHOW;
                 default: return null;
             }
         }
     }
 
-    private CommandType type;
-    private HashMap<String, String> attributes;
-
-    Command(CommandType type, HashMap<String, String> attrubutes) {
-        this.type = type;
-        this.attributes = attrubutes;
+    public enum AttributeType {
+        ITEM_CODE,
+        BOX_CODE,
+        CONTAINER_CODE,
+        NUMBER_OF_ITEMS,
+        TOTAL_UNEARNED_REVENUE,
+        TOTAL_REVENUE,
+        SERIAL_NUMBER,
+        SERIAL_NUMBER_OF_LOADING_ITEM,
+        SERIAL_NUMBER_OF_HOLDER,
+        VOLUME,
+        MASS
     }
 
-    public HashMap<String, String> getAttributes() {
+    private CommandType type;
+    private HashMap<AttributeType, String> attributes;
+
+    public Command(CommandType type, HashMap<AttributeType, String> attributes) {
+        this.type = type;
+        this.attributes = attributes;
+    }
+
+    public HashMap<AttributeType, String> getAttributes() {
         return new HashMap<>(this.attributes);
     }
 
     public CommandType getType() {
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return this.type.toString() + ": " + this.attributes.toString();
     }
 }
