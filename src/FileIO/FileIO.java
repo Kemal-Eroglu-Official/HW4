@@ -3,6 +3,7 @@ package FileIO;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -14,6 +15,7 @@ public class FileIO {
     private Queue<Command> data;
 
     public void setup() {
+        this.data = new LinkedList<>();
         try {
             Scanner scanner = new Scanner(new File("src\\FileIO\\ExampleCommands.csv"));
         
@@ -34,9 +36,10 @@ public class FileIO {
         } 
         catch (FileNotFoundException e) {
             e.printStackTrace();
+            System.exit(-39);
         }
         catch (NumberFormatException e) {
-            e.printStackTrace();
+            
         } 
         catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +72,7 @@ public class FileIO {
             attributes.put(AttributeType.SERIAL_NUMBER, data[4]);
         }
         else {
-            System.exit(-66);
+            System.exit(-75);
         }
 
         this.data.add(new Command(CommandType.NEW_OBJECT, attributes));
@@ -111,8 +114,8 @@ public class FileIO {
 
     private void addLoadCommand(String[] data) {
         HashMap<AttributeType, String> attributes = new HashMap<>();
-        attributes.put(AttributeType.SERIAL_NUMBER_OF_LOADING_ITEM, data[2]);
-        attributes.put(AttributeType.SERIAL_NUMBER_OF_HOLDER, data[3]);
+        attributes.put(AttributeType.SERIAL_NUMBER_OF_LOADING_ITEM, data[1]);
+        attributes.put(AttributeType.SERIAL_NUMBER_OF_HOLDER, data[2]);
 
         this.data.add(new Command(CommandType.LOAD, attributes));
     }
@@ -127,13 +130,17 @@ public class FileIO {
     private void addShowCommand(String[] data) {
         HashMap<AttributeType, String> attributes = new HashMap<>();
 
-        if (data[1] == "1") {
+        if (data[1].equals("1")) {
             attributes.put(AttributeType.TOTAL_UNEARNED_REVENUE, null);
         }
-        else if (data[2] == "2") {
+        else if (data[1].equals("2")) {
             attributes.put(AttributeType.TOTAL_REVENUE, null);
         }
 
-        this.data.add(new Command(CommandType.SHIP, attributes));
+        this.data.add(new Command(CommandType.SHOW, attributes));
+    }
+
+    public Queue<Command> getData() {
+        return new LinkedList<>(this.data);
     }
 }
